@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		
+		<!-- Blog post -->
+		<div class="card m-auto">
+			<div class="card-body my-2">
+				<h2 class="card-title">{{notes.title}}</h2>
+				<p class="card-text">{{notes.body|linebreaksbr}}</p>
+				<p>
+
+					{% if notes.author == request.user %}
+						<a href="{% url 'publish' notes.id %}" class="btn btn-success">Publish</a>
+					{% endif %}
+					{% if notes.author == request.user %}
+						<a href="{% url 'edit_note' notes.id %}" class="btn btn-primary">Update</a>
+					{% endif %}
+					{% if notes.author == request.user %}
+						<a href="{% url 'delete_note' notes.id %}" class="btn btn-danger">Delete</a>
+					{% endif %}
+
+					{% if notes.author != request.user %}
+						<a href="{% url 'delshare' notes.id %}" class="btn btn-danger">Unshared</a>
+						<a href="{% url 'edit_note' notes.id %}" class="btn btn-primary">Update</a>
+					{% endif %}
+
+
+				</p>
+
+				
+			</div>
+			<div class="card-footer text-muted">
+				Updated on {{notes.date_updated}}
+				{% if notes.author != request.user  %}
+						Shared by {{notes.author.username}}
+				{% endif %}
+			</div>
+		</div>
+		<!-- end Blog post -->
+
+	</div>
+</div>
+
+{% endblock content %}

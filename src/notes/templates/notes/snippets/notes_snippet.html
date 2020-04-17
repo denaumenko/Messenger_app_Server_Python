@@ -1,0 +1,66 @@
+<style type="text/css">
+	.card{
+		max-width: 700px;
+		width: 100%;
+	}
+	.card-body{
+		padding: 20px;
+
+	}
+</style>
+{% if notes %}
+<div class="container">
+	<div class="row">
+
+		
+		<!-- Blog Post -->
+		<div class="card m-auto">
+<!--			<a href="{% url 'blog:detail' notes.id %}">-->
+<!--				<img class="card-img-top" src="">-->
+			</a>
+			
+			<div class="card-body mt-2 mb-2">
+				<a href="{% url 'detail_note' notes.id %}">
+					<h2 class="card-title">{{notes.title}}</h2>
+				</a>
+				<p class="card-text">{{notes.body|linebreaksbr|truncatechars:250}}</p>
+				{% if notes.author == request.user %}
+					<a href="{% url 'publish' notes.id %}" class="btn btn-success">Publish</a>
+					<a href="{% url 'edit_note' notes.id %}" class="btn btn-primary">Update</a>
+					<a href="{% url 'delete_note' notes.id %}" class="btn btn-danger">Delete</a>
+				{% endif %}
+
+				{% if notes.author != request.user %}
+					<a href="{% url 'delshare' notes.id %}" class="btn btn-danger">Unshared</a>
+					<a href="{% url 'edit_note' notes.id %}" class="btn btn-primary">Update</a>
+				{% endif %}
+
+
+			</div>
+			<div class="card-footer text-muted">
+			  Updated on {{notes.date_updated}}
+				{% if notes.author != request.user  %}
+						Shared by {{notes.author.username}}
+				{% endif %}
+<!--				by {{notes.author.username}}-->
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+{% else %}
+
+<div class="container"> 
+	<div class="row">
+		<div class="card m-auto">
+			<div class="card-body mt-2 mb-2">
+				<h2 class="card-title">
+					No results
+				</h2>
+				<p class="card-text">There were no results matching your search: "{{query}}".</p>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
